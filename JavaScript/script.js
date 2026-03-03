@@ -1,53 +1,74 @@
-// Create a Date
+// Date actuelle affichée
+var currentDate = new Date();
 
-var d = new Date();
-
-let day = String(d.getDate()).padStart(2, '0');
-let month = String(d.getMonth() + 1).padStart(2, '0');
-let year = d.getFullYear();
-
-console.log(`${day}/${month}/${year}`);
-
-// tableau des jours de la semainde
-var jours = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
-
-// Mois en cours
-var days = [];
-
-var currentMonth = d.getMonth();
-var currentYear = d.getFullYear();
-
-var date = new Date(currentYear, currentMonth, 1);
-
-while (date.getMonth() === currentMonth) {
-
-    let nomJour = jours[date.getDay()];
-    let day = String(date.getDate()).padStart(2, '0');
-    let month = String(date.getMonth() + 1).padStart(2, '0');
-    let year = date.getFullYear();
-
-    days.push({
-        "jour": nomJour, 
-        "date": `${day}/${month}/${year}`
-    });
-
-    date.setDate(date.getDate() + 1);
-}
-
+// tableau des jours
+var jours = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
+var moisNoms = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
 
 // Sélection du container
 var container = document.querySelector(".grid-container");
 
-// Créer les éléments grid-item
-days.forEach(d => {
-    var div = document.createElement("div");
-    div.className = "grid-item";
+function genererCalendrier(date){
 
-    // Ajouter la classe weekend si samedi ou dimanche
-    if (d.jour === "Samedi" || d.jour === "Dimanche") {
-        div.classList.add("weekend");
+    container.innerHTML = "";
+
+    var currentMonth = date.getMonth();
+    var currentYear = date.getFullYear();
+    var title = document.querySelector(".nomMois");
+
+    var premierJour = new Date(currentYear, currentMonth, 1);
+
+    var premierJourSemaine = premierJour.getDay(); 
+
+    for (let i = 0; i < premierJourSemaine; i++) {
+        var emptyDiv = document.createElement("div");
+        emptyDiv.className = "grid-item empty";
+        container.appendChild(emptyDiv);
     }
-    
-    div.innerHTML = `<div class="jour">${d.jour}</div><div class="date">${d.date}</div>`;
-    container.appendChild(div);
+
+    title.textContent = `${moisNoms[currentMonth]} ${currentYear}`;
+
+    while (premierJour.getMonth() === currentMonth) {
+
+        let nomJour = jours[premierJour.getDay()];
+        let day = String(premierJour.getDate()).padStart(2, '0');
+        let month = String(premierJour.getMonth() + 1).padStart(2, '0');
+        let year = premierJour.getFullYear();
+
+        var div = document.createElement("div");
+        div.className = "grid-item";
+
+        if (nomJour === "Samedi" || nomJour === "Dimanche") {
+            div.classList.add("weekend");
+        }
+
+        div.innerHTML = `
+            <div class="jour">${nomJour}</div>
+            <div class="date">${day}/${month}/${year}</div>
+        `;
+
+        container.appendChild(div);
+
+        // IMPORTANT
+        premierJour.setDate(premierJour.getDate() + 1);
+    }
+}
+
+
+// Boutons
+var btnprec = document.querySelector(".mois-prec");
+var btnsuiv = document.querySelector(".mois-suiv");
+
+btnprec.addEventListener("click", function(){
+    currentDate.setMonth(currentDate.getMonth() - 1);
+    genererCalendrier(currentDate);
 });
+
+btnsuiv.addEventListener("click", function(){
+    currentDate.setMonth(currentDate.getMonth() + 1);
+    genererCalendrier(currentDate);
+});
+
+
+// Génération initiale
+genererCalendrier(currentDate);

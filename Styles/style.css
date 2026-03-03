@@ -1,7 +1,7 @@
 .grid-container {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
     padding: 10px;
 }
 
@@ -19,4 +19,21 @@
 
 .weekend{
     background-color: red;
+}
+
+
+
+
+.navigation-calendrier{
+    display: flex;
+    justify-content: space-around;
+    padding: 20px;
+}
+
+
+.week-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    font-weight: bold;
+    text-align: center;
 }
