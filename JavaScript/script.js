@@ -11,24 +11,27 @@ console.log(`${day}/${month}/${year}`);
 // tableau des jours de la semainde
 var jours = ["Dimanche", "Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi"];
 
-// 100 jours
-
-var today = new Date();
+// Mois en cours
 var days = [];
 
-for (let i = 0; i <= 100; i++) {
-    let nextDate = new Date(today);
-    nextDate.setDate(today.getDate() + i);
+var currentMonth = d.getMonth();
+var currentYear = d.getFullYear();
 
-    let nomJour = jours[nextDate.getDay()];
-    let day = String(nextDate.getDate()).padStart(2, '0');
-    let month = String(nextDate.getMonth() + 1).padStart(2, '0');
-    let year = nextDate.getFullYear();
+var date = new Date(currentYear, currentMonth, 1);
+
+while (date.getMonth() === currentMonth) {
+
+    let nomJour = jours[date.getDay()];
+    let day = String(date.getDate()).padStart(2, '0');
+    let month = String(date.getMonth() + 1).padStart(2, '0');
+    let year = date.getFullYear();
 
     days.push({
         "jour": nomJour, 
         "date": `${day}/${month}/${year}`
     });
+
+    date.setDate(date.getDate() + 1);
 }
 
 
